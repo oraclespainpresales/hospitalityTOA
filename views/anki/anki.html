@@ -8,34 +8,34 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
       <link href="root/stylesheets/bootstrap.min.css" rel="stylesheet"></link>
-      
+
       <link href="root/stylesheets/font-awesome.css" rel="stylesheet"></link>
-      
+
       <link href="root/stylesheets/fullcalendar.css" rel="stylesheet"></link>
-      
+
       <link href="root/stylesheets/date.ribbon.css" rel="stylesheet"></link>
 
       <link href="anki/stylesheets/anki.css" rel="stylesheet"></link>
 
       <script type="text/javascript" src="root/javascripts/sha256.js"></script>
-      
+
       <script type="text/javascript" src="root/javascripts/jquery.min.js"></script>
-      
+
       <script type="text/javascript" src="root/javascripts/jquery.panzoom.js"></script>
-      
+
       <script type="text/javascript" src="root/javascripts/bootstrap.min.js"></script>
 
       <script type="text/javascript" src="root/javascripts/jquery.blockUI.js"></script>
-      
+
       <script type="text/javascript" src="root/javascripts/fullcalendar.min.js"></script>
-      
+
       <script type="text/javascript" src="root/javascripts/blue.json.date.ribbon.js"></script>
-      
+
       <script type="text/javascript" src="root/javascripts/xml2json.js"></script>
 
       <script type="text/javascript" src="anki/javascripts/anki.js"></script>
    </head>
-   
+
    <body>
       <div class="container">
       <noscript>
@@ -51,13 +51,13 @@
 
                <div class="col-md-5 colbody">
                   <div class="colheader route">
-                     <p class="info" id="worktype"></p> 
-                     <p class="info" id="priority"></p> 
+                     <p class="info" id="worktype"></p>
+                     <p class="info" id="priority"></p>
                      <p class="info" id="status"></p>
                      <p class="info" id="duration"></p>
                   </div>
                   <p class="info" id="name"></p>
-                  <p class="info" id="cell"></p> 
+                  <p class="info" id="cell"></p>
                </div>
 
                <div class="col-md-1 colbody">
@@ -66,7 +66,7 @@
 
                <div class="col-md-3 colbody">
                   <img id="carphoto" src="anki/images/imagenotavailable.jpg"></img>
-                  <p class="info" id="car"></p> 
+                  <p class="info" id="car"></p>
                </div>
 
                <div class="col-md-3 colbody">
@@ -92,7 +92,7 @@
                      </div>
                      <img class="panzoom" id="trackphoto" src="anki/images/imagenotavailable.jpg"></img>
                   </div>
-                  <p class="info" id="track"></p> 
+                  <p class="info" id="track"></p>
                </div>
       </div>
 
@@ -108,6 +108,29 @@
                   <img id="vehiclephoto" src="anki/images/imagenotavailable.jpg"></img>
                </div>
 
+               <div class="col-md-3 colbody">
+                   <button onclick="sendCozmo()" class="blue-pill">Send technician</button>
+               </div>
+               <script type="text/javascript">
+                   function sendCozmo() {
+                       $.ajax({
+                           url: "COZMO_ENDPOINT",
+                           dataType: 'json',
+                           //beforeSend: function (xhr) {
+                           //xhr.setRequestHeader('Authorization', 'Basic ');
+                           //},
+                           type: "POST",
+                           async: true,
+                           success: function(data, status) {
+                               console.log('cozmo sent: ' + data)
+                           },
+                           error: function(text, status) {
+                               console.log('error sending cozmo: ' + status)
+                           }
+                       });
+                   }
+               </script>
+
                <div class="col-md-5 colbody">
                   <p class="info" id="resourcename"></p>
                   <p class="info" id="credence"></p>
@@ -120,7 +143,7 @@
                </div>
       </div>
 
-      <br></br> 
+      <br></br>
 
       <div id="spinner" class="spinner">
          <div class="bar1"></div>

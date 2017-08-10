@@ -77,6 +77,7 @@ $(document).ready(function() {
       {label: '42', name: 'Send an Ambulance', id: '66'},
       {label: '43', name: 'Send a Tow Truck', id: '67'},
       {label: '41', name: 'Send a Safety Car', id: '68'},
+      {label: '44', name: 'Send Cozmo', id: '77'},
     ],
 
     priorities: [
@@ -102,7 +103,7 @@ $(document).ready(function() {
       {id:'13', label: '64', panX: -160, panY: -160},
     ],
 
-    // activity details 
+    // activity details
     activity: [],
 
     // resource details
@@ -110,42 +111,42 @@ $(document).ready(function() {
 
     // get track
     getTrack: function(a) {
-      // get the track details 
+      // get the track details
       for (i in this.tracks){
-        if (this.tracks[i].label == a) 
+        if (this.tracks[i].label == a)
           return this.tracks[i];
       };
 
       return {id: 'unknown', label: a, panX: 0, panY: 0};
     },
 
-    // get car 
+    // get car
     getCar: function(a) {
-      // get the car details 
+      // get the car details
       for (i in this.cars){
-        if (this.cars[i].label == a) 
+        if (this.cars[i].label == a)
           return this.cars[i];
       };
 
       return {label: a, name: a, id: a, image: 'anki/images/imagenotavailable.jpg'};
     },
 
-    // get worktype 
+    // get worktype
     getWorktype: function(a) {
-      // get the work type details 
+      // get the work type details
       for (i in this.worktypes){
-        if (this.worktypes[i].label == a) 
+        if (this.worktypes[i].label == a)
           return this.worktypes[i];
       };
 
       return {label: a, name: a, id: a};
     },
 
-    // get priority 
+    // get priority
     getPriority: function(a) {
-      // get the priority details 
+      // get the priority details
       for (i in this.priorities){
-        if (this.priorities[i].label == a) 
+        if (this.priorities[i].label == a)
           return this.priorities[i];
       };
 
@@ -189,7 +190,8 @@ $(document).ready(function() {
 
       this.car = getUrlVars(document.URL).ca||'unknown';
 
-      this.track = this.getTrack(getUrlVars(document.URL).tr).id.lpad("0",2)||'unknown';
+      //this.track = this.getTrack(getUrlVars(document.URL).tr).id.lpad("0",2)||'unknown';
+       this.track = this.getTrack(getUrlVars(document.URL).tr).id.lpad("0",2)||'00';
 
       // get activity
       this.getActivity();
@@ -201,7 +203,7 @@ $(document).ready(function() {
       // show spinner
       app.spinner.show();
 
-      // the object 
+      // the object
       var obj = {
         now: app.now,
         company: app.company,
@@ -234,14 +236,14 @@ $(document).ready(function() {
             contentType: 'application/json',
             url: 'anki/read',
             data: myObject,
-            success: function(data, textStatus, jqXHR) {                
+            success: function(data, textStatus, jqXHR) {
               // hide spinner
               app.spinner.hide();
 
               // set default content
               $('#worktype').html(app.activitytypename);
 
-              $('#name').html("<strong>" + app.fullname + "</strong>"); 
+              $('#name').html("<strong>" + app.fullname + "</strong>");
 
               $('#cell').html("<span class='fa fa-phone'></span> " + app.cell);
 
@@ -249,48 +251,50 @@ $(document).ready(function() {
 
               $('#status').html("<span class='fa fa-angle-right'></span> " + app.status);
 
-              $('#duration').html("<span class='fa fa-angle-right'></span> " + app.duration + "mins");  
+              $('#duration').html("<span class='fa fa-angle-right'></span> " + app.duration + "mins");
 
-              $('#car').html("<span class='fa fa-car'></span> " + app.getCar(app.car).name);
+              $('#car').html("<span class='fa fa-wifi'></span> " + app.getCar(app.car).name);
 
               $('#carphoto').attr('src', app.getCar(app.car).image);
 
-              $('#track').html("<span class='fa fa-road'></span> " + app.track);
+              $('#track').html("<span class='fa fa-bed'></span> " + app.track);
 
-		      $('#pan-u').click(function () {
-                $('#trackphoto').panzoom("pan", 0, -20, {relative: true, animate: true});
-    		  });
-    		  $('#pan-r').click(function () {
-        		$('#trackphoto').panzoom("pan", 20, 0, {relative: true, animate: true});
-    		  });
-    		  $('#pan-d').click(function () {
-        		$('#trackphoto').panzoom("pan", 0, 20, {relative: true, animate: true});
-    		  });
-    		  $('#pan-l').click(function () {
-        		$('#trackphoto').panzoom("pan", -20, 0, {relative: true, animate: true});
-    		  });
+          var trackphoto = getUrlVars(document.URL).trackphoto
+          if(trackphoto != 0){
+  		      $('#pan-u').click(function () {
+                  $('#trackphoto').panzoom("pan", 0, -20, {relative: true, animate: true});
+      		  });
+      		  $('#pan-r').click(function () {
+          		$('#trackphoto').panzoom("pan", 20, 0, {relative: true, animate: true});
+      		  });
+      		  $('#pan-d').click(function () {
+          		$('#trackphoto').panzoom("pan", 0, 20, {relative: true, animate: true});
+      		  });
+      		  $('#pan-l').click(function () {
+          		$('#trackphoto').panzoom("pan", -20, 0, {relative: true, animate: true});
+      		  });
 
-              $('#trackphoto').attr('src', 'anki/images/track_photo.grey.png');
+                $('#trackphoto').attr('src', 'anki/images/track_photo.grey.png');
 
-              $('#trackphoto').panzoom({
-          		$zoomIn: $("#zoomin-ctl"),
-            	$zoomOut: $("#zoomout-ctl"),
-            	$reset: $("#reset"),
-		        contain: "invert", //"invert",
-        		minScale: 1,
-            	maxScale: 2
-        	  });
+                $('#trackphoto').panzoom({
+            		$zoomIn: $("#zoomin-ctl"),
+              	$zoomOut: $("#zoomout-ctl"),
+              	$reset: $("#reset"),
+  		        contain: "invert", //"invert",
+          		minScale: 1,
+              	maxScale: 2
+          	  });
 
-              $('#trackphoto').panzoom("zoom", 3, {increment: 0.1});
+                $('#trackphoto').panzoom("zoom", 3, {increment: 0.1});
 
-              $('#trackphoto').panzoom("pan", app.tracks[app.track*1].panX, app.tracks[app.track*1].panY, {relative: true, animate: true});
-
+                $('#trackphoto').panzoom("pan", app.tracks[app.track*1].panX, app.tracks[app.track*1].panY, {relative: true, animate: true});
+          }
 
               // if wrong demo, get no responses
               if (!data.length) {
-                $.growlUI('error', 'invalid form values found'); 
+                $.growlUI('error', 'invalid form values found');
                 return;
-              };           
+              };
 
               // if bad endpoint, get a 301 moved permanently html
               var xml = null;
@@ -298,7 +302,7 @@ $(document).ready(function() {
                 xml = $($.parseXML(data[0]));
 
               } catch(err){
-                $.growlUI('error', 'invalid form values found'); 
+                $.growlUI('error', 'invalid form values found');
                 return;
               };
 
@@ -307,18 +311,18 @@ $(document).ready(function() {
 
               // if wrong login, get 1 response with result code >0 and error_msg Login failed
               if (fault.length) {
-                $.growlUI("Error", fault.text()); 
+                $.growlUI("Error", fault.text());
                 return;
               };
 
               // if work order not found, get 1 response with result code 0 but no activities
               total = xml.find("total");
-          
+
               if (total.text() == 0) {
                 // add activity if not found
                 app.addActivity();
 
-                return;           
+                return;
               };
 
               // activity search results to json
@@ -337,7 +341,7 @@ $(document).ready(function() {
                 xml = $($.parseXML(data[1]));
 
               } catch(err){
-                $.growlUI('error', 'failed to parse xml result'); 
+                $.growlUI('error', 'failed to parse xml result');
                 return;
               };
 
@@ -359,7 +363,7 @@ $(document).ready(function() {
 
                 // get mime type
                 mime_type = xml.find('file_mime_type');
-          
+
                 // get file data
                 file_data = xml.find('file_data');
 
@@ -377,7 +381,7 @@ $(document).ready(function() {
 
                 // get mime type
                 mime_type = xml.find('file_mime_type');
-          
+
                 // get file data
                 file_data = xml.find('file_data');
 
@@ -392,7 +396,7 @@ $(document).ready(function() {
               // set content
               $('#worktype').html(app.getWorktype(app.activity['worktype']).name);
 
-              $('#name').html("<strong>" + app.activity['name'] + "</strong>"); 
+              $('#name').html("<strong>" + app.activity['name'] + "</strong>");
 
               $('#cell').html("<span class='fa fa-phone'></span> " + app.activity['cell']);
 
@@ -401,18 +405,18 @@ $(document).ready(function() {
               $('#carphoto').attr('src', app.getCar(app.activity['car']).image);
 
               $('#track').html("<span class='fa fa-road'></span> " + app.activity['track']);
+              if(trackphoto != 0){
+                $('#trackphoto').panzoom("zoom", 3, {increment: 0.1});
 
-              $('#trackphoto').panzoom("zoom", 3, {increment: 0.1});
-
-              $('#trackphoto').panzoom("pan", app.tracks[app.track*1].panX, app.tracks[app.track*1].panY, {relative: true, animate: true});
-
+                $('#trackphoto').panzoom("pan", app.tracks[app.track*1].panX, app.tracks[app.track*1].panY, {relative: true, animate: true});
+              }
 
 
              $('#priority').html("<span class='fa fa-angle-right'></span> " + app.getPriority(app.activity['priority']).name);
 
               $('#status').html("<span class='fa fa-angle-right'></span> " + app.activity['status']);
 
-              $('#duration').html("<span class='fa fa-angle-right'></span> " + app.activity['duration'] + "mins");  
+              $('#duration').html("<span class='fa fa-angle-right'></span> " + app.activity['duration'] + "mins");
 
 	      try {
               	var dateStr = app.activity['start_time'];
@@ -422,7 +426,7 @@ $(document).ready(function() {
               	var date = new Date(d[0],(d[1]-1),d[2],t[0],t[1],t[2]);
 
               	$("#ribbon1").dateRibbon({titleFormate:"days",date:date});
-	      
+
 	      } catch (e){
 		// do nothing
 	      }
@@ -462,15 +466,15 @@ $(document).ready(function() {
               // hide spinner
               app.spinner.hide();
 
-              $.growlUI(textStatus, errorThrown); 
+              $.growlUI(textStatus, errorThrown);
             }
-          }); 
+          });
         },
         error: function(jqXHR, textStatus, errorThrown) {
           // hide spinner
           app.spinner.hide();
 
-          $.growlUI(textStatus, errorThrown); 
+          $.growlUI(textStatus, errorThrown);
         }
       });
     },
@@ -481,7 +485,7 @@ $(document).ready(function() {
       // show spinner
       app.spinner.show();
 
-      // the object 
+      // the object
       var obj = {
         now: app.now,
         company: app.company,
@@ -500,15 +504,15 @@ $(document).ready(function() {
         duration: app.duration||60,
         properties: {property: [
           {
-            label: 'priority', 
+            label: 'priority',
             value: app.priority
           },
           {
-            label: 'track', 
+            label: 'track',
             value: app.track
           },
           {
-            label: 'car', 
+            label: 'car',
             value: app.car
           }
 
@@ -525,24 +529,24 @@ $(document).ready(function() {
         contentType: 'application/json',
         url: 'anki/create',
         data: myObject,
-        success: function(data, textStatus, jqXHR) {                
+        success: function(data, textStatus, jqXHR) {
           // hide spinner
           app.spinner.hide();
 
           if (data.error){
-            $.growlUI("error", data.error.code); 
+            $.growlUI("error", data.error.code);
 
             return;
           };
-          
+
           var $xml = $($.parseXML(data.response));
 
           var $fault = $xml.find("faultstring");
 
           var $soapval = $xml.find("soapVal");
-            
+
           if ($fault.length) {
-            $.growlUI($fault.text(), $soapval.text()); 
+            $.growlUI($fault.text(), $soapval.text());
 
             return;
           }
@@ -552,7 +556,7 @@ $(document).ready(function() {
           var $description = $xml.find("description");
 
           if ($result.text() == 'error') {
-            $.growlUI($result.text(), $description.text()); 
+            $.growlUI($result.text(), $description.text());
 
             return;
           }
@@ -571,13 +575,12 @@ $(document).ready(function() {
           // hide spinner
           app.spinner.hide();
 
-          $.growlUI(textStatus, errorThrown); 
+          $.growlUI(textStatus, errorThrown);
         }
-      });   
+      });
     },
   }
 
   // init application
   app.init();
 });
-
